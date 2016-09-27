@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ais.dao.RentDao">
+	<resultMap type="com.ais.bean.Rent" id="RentList">
+		<id property="id" column="id" />
+		<result property="asset_id" column="asset_id" />
+		<result property="price" column="price" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	
+	<insert id="save" parameterType="com.ais.bean.Rent">
+		insert into rent_info_t(asset_id,status,price) values (#{asset_id},#{status},#{price})
+	</insert>
+	
+<!-- 	更新出租表设置状态为2，表示已出租，同时添加其他信息 -->
+	<update id="update" parameterType="com.ais.bean.Rent">
+		update  rent_info_t set status='2', price=#{price}  where asset_id=#{asset_id}
+	</update>
+	
+	
+<!-- 	更新出租状态 -->
+	<update id="updateByNo">
+		update rent_info_t set status=#{1} where asset_id=#{0}
+	</update>
+	<select id="getByStatus" parameterType="java.lang.Integer" resultMap="RentList">
+		select * from rent_info_t where status = #{status} 
+	</select>
+</mapper>

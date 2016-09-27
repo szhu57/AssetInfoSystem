@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ais.dao.AssetTypeDao">
+	<resultMap type="com.ais.bean.AssetType" id="assetTypeList">
+		<id property="id" column="id" />
+		<result property="type" column="type" />
+		<result property="subType" column="sub_type" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Integer" resultMap="assetTypeList">
+		select * from asset_type_t where id = #{id}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from asset_type_t where id = #{id}
+	</delete>
+	<insert id="save" parameterType="com.ais.bean.AssetType">
+		insert into asset_type_t(type, sub_type) values (#{type}, #{subType})
+	</insert>
+	
+	<update id="update" parameterType="com.ais.bean.AssetType">
+		update asset_type_t set type=#{type}, sub_type=#{subType} where id=#{id}
+	</update>
+	
+	<select id="getAll" resultMap="assetTypeList">
+		select * from asset_type_t
+	</select>
+</mapper>

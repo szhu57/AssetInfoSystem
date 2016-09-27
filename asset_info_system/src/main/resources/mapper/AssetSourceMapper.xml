@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ais.dao.AssetSourceDao">
+	<resultMap type="com.ais.bean.AssetSource" id="assetSourceList">
+		<id property="id" column="id" />
+		<result property="sources" column="sources" />
+	</resultMap>
+
+	<select id="getById" parameterType="java.lang.Integer">
+		select * from asset_source_t where
+		id = #{id}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from asset_source_t where id = #{id}
+	</delete>
+	<insert id="save" parameterType="com.ais.bean.AssetSource">
+		insert into asset_source_t(sources) values (#{sources})
+	</insert>
+	
+	<update id="update" parameterType="com.ais.bean.AssetSource">
+		update asset_source_t set sources=#{sources} where id=#{id}
+	</update>
+	
+	<select id="getAll" resultMap="assetSourceList">
+		select * from asset_source_t
+	</select>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ais.dao.AssetDao">
+	<resultMap type="com.ais.bean.Asset" id="assetList">
+		<id property="id" column="id" />
+		<result property="no" column="no" />
+		<result property="type" column="type" />
+		<result property="subType" column="sub_type" />
+		<result property="assetname" column="assetname" />
+		<result property="model" column="model" />
+		<result property="unit" column="unit" />
+		<result property="department" column="department" />
+		<result property="location" column="location" />
+		<result property="responsiblePerson" column="responsible_person" />
+		<result property="useStatus" column="use_status" />
+		<result property="sources" column="sources" />
+		<result property="buildarea" column="buildarea" />
+		<result property="usearea" column="usearea" />
+		<result property="buildstatus" column="buildstatus" />
+		<result property="manufacturer" column="manufacturer" />
+		<result property="manuaddress" column="manuaddress" />
+		<result property="manuphone" column="manuphone" />
+		<result property="note" column="note" />
+		<result property="buydate" column="buydate" jdbcType="DATE" />
+		<result property="regdate" column="regdate" jdbcType="DATE" />
+		<result property="usedate" column="usedate" jdbcType="DATE" />
+		<result property="operator" column="operator" />
+		<result property="count" column="count" />
+		<result property="unitPrice" column="unit_price" />
+		<result property="totalPrice" column="total_price" />
+		<result property="availYears" column="avail_years" />
+		<result property="depreType" column="depre_type" />
+		<result property="netSalvage" column="net_salvage" />
+		<result property="monthDepre" column="month_depre" />
+		<result property="totalDepre" column="total_depre" />
+		<result property="netWorth" column="net_worth" />
+	</resultMap>
+	
+<!-- 	通过资产状态（出租抵押等获取资产）  -->
+	
+  <select id="getAssetByStatus" parameterType="java.lang.Integer" resultMap="assetList">
+		select * from asset_t where asset_status = #{status} and usedate  is not null
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Integer" resultMap="assetList">
+		select * from asset_t where id = #{id}
+	</select>
+	
+<!-- 	通过编号查找并且使用日期不为空的资产 -->
+	<select id="getByNo" parameterType="java.lang.String" resultMap="assetList">
+		select * from asset_t where  no = #{no} and  usedate  is not null
+	</select>
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		delete from asset_t where id = #{id}
+	</delete>
+	<insert id="save" parameterType="com.ais.bean.Asset">
+		insert into asset_t(no,
+		type, sub_type,
+		assetname, model, unit, department, location, responsible_person,
+		use_status,
+		sources, buildarea, usearea, buildstatus, manufacturer,
+		manuaddress,
+		manuphone, note, buydate, regdate, usedate, operator,
+		count,
+		unit_price, total_price, avail_years, depre_type, net_salvage,
+		month_depre, total_depre, net_worth)
+		values (#{no}, #{type}, #{subType},
+		#{assetname}, #{model}, #{unit}, #{department}, #{location},
+		#{responsiblePerson},
+		#{useStatus}, #{sources}, #{buildarea},
+		#{usearea}, #{buildstatus},
+		#{manufacturer}, #{manuaddress},
+		#{manuphone}, #{note}, #{buydate, jdbcType=DATE}, #{regdate, jdbcType=DATE},
+		#{usedate, jdbcType=DATE}, #{operator},
+		#{count},
+		#{unitPrice}, #{totalPrice}, #{availYears}, #{depreType},
+		#{netSalvage},
+		#{monthDepre}, #{totalDepre}, #{netWorth})
+	</insert>
+	
+	<update id="update" parameterType="com.ais.bean.Asset">
+		update asset_t set no=#{no}, type=#{type}, sub_type=#{subType}, assetname=#{assetname}, model=#{model}, unit=#{unit}, department=#{department}, location=#{location},
+		responsible_person=#{responsiblePerson}, use_status=#{useStatus}, sources=#{sources}, buildarea=#{buildarea}, usearea=#{usearea}, buildstatus=#{buildstatus}, manufacturer=#{manufacturer},
+		manuaddress=#{manuaddress}, manuphone=#{manuphone}, note=#{note}, buydate=#{buydate}, regdate=#{regdate}, usedate=#{usedate}, operator=#{operator}, count=#{count}, unit_price=#{unitPrice}, total_price=#{totalPrice}, 
+		avail_years=#{availYears}, depre_type=#{depreType}, net_salvage=#{netSalvage}, month_depre=#{monthDepre}, total_depre=#{totalDepre}, net_worth=#{netWorth} where id=#{id}
+	</update>
+<!-- 	0表示第一个参数，1表示第二个参数 -->
+	<update id="updateByNo">
+	update asset_t set asset_status= #{1} where no =#{0} 
+	</update>
+	
+	<select id="getByType" parameterType="java.util.Map"
+		resultMap="assetList">
+		select * from asset_t where ${type} = #{value} 
+	</select>
+	<select id="getByNullDate" parameterType="java.util.Map"
+		resultMap="assetList">
+		select * from asset_t where ${type} = ''or ${type} is null
+	</select>
+	<select id="getByNotNullDate" parameterType="java.util.Map"
+		resultMap="assetList">
+		select * from asset_t where ${type} is not null
+	</select>
+	<select id="getAll" resultMap="assetList">
+		select * from asset_t
+	</select>
+</mapper>
